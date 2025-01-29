@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Page</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1 style="text-align: center;">File Transfer Tool</h1>
+<div class="userContent" contenteditable="true">
+    <label for="userID">UserID: </label><input id="userID" name="UserID" type="" />
+    <button id="checkFiles" onclick="getUserFiles()">
+        Check User Files
+    </button></div>
+<div id="ButtonID" style="text-align: center;">
+    <div class="UploadButton">
+        <input type="file" id="fileInput" style="display: none;" />
+        <p><button onclick="document.getElementById('fileInput').click()">UPLOAD FILE</button></p>
+    </div>
+    <div class="DownloadButton">
+        <button onclick="downloadFile()"><a>DOWNLOAD FILE</a></button>
+    </div>
+</div>
+<div class="FileIDClass">
+    <label for="fileID">File ID:</label>
+    <input id="fileID" name="fileID" type="text" /><br /><br />
+</div>
+<div class="SelectedFileClass">
+    <p id="selectedFileName">
+        FILE: No file selected!
+    </p>
+</div>
+<div id="fileList">
+    <p>
+
+    </p>
+</div>
+
+<script>
+    //Handle userId search
+    function getUserFiles() {
+    const userId = document.getElementById('userID').value.trim();
+        if (!userId) {
+            alert("Please enter a User ID.");
+            return;
+        }
+
+        fetch(`/userFiles?userId=${encodeURIComponent(userId)}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('fileList').textContent = data;
+            })
+            .catch(error => {
+                alert('Error fetching files: ' + error);
+            });
+    }
+
+    // Handle file selection
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const fileName = e.target.files[0] ? e.target.files[0].name : 'No file selected!';
+        document.getElementById('selectedFileName').textContent = 'FILE: ' + fileName;
+        const userID = document.getElementById('userID').value.trim();
+        if (e.target.files[0]) {
+            const fileId = document.getElementById('fileID').value.trim();
+            if (!fileId) {
+                alert('Please enter a File ID before uploading');
+                return;
+            }
+
+            uploadFile(e.target.files[0], fileId,userID);
+        }
+    });
+
+    // Handle file upload
+    function uploadFile(file, fileId, userID) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('fileId', fileId);
+        formData.append('userId', userID);
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(result => {
+            alert(result);
+        })
+        .catch(error => {
+            alert('Error uploading file: ' + error);
+        });
+    }
+
+    // Handle file download
+    function downloadFile() {
+        const fileId = document.getElementById('fileID').value.trim();
+        if (!fileId) {
+            alert('Please enter a File ID to download');
+            return;
+        }
+
+        window.location.href = '/download?fileId=' + encodeURIComponent(fileId);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+body {
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+  word-spacing: 0.8px;
+  background-color: rgb(12,146,150,0.4);
+  color: white;
+}
+
+
+.UserClass {
+
+}
+
+#ButtonID button{
+   background-color:#293eff;
+  color: white;
+  padding: 12px;
+  border-radius: 19px;
+}
+
+#ButtonID button:hover{
+
+  background-color:white;
+  color: #293eff;
+}
+
