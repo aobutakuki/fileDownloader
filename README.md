@@ -1,5 +1,5 @@
 # File Downloader Tool
-This is project is a file download tool, it allows users from the same network to share files (default: up to 10MB) between users and over networks. The project uses Spring Boot TCP-based protocol and creates a server running on port (USER_STATIC_IP:6060)
+This is project is a file download tool, it allows users from the same network to share files (default: up to 10MB) between users and over networks. The project uses Spring Boot TCP-based protocol and creates a server running on port (LOCAL_IP:6060)
 
 ![image](https://github.com/user-attachments/assets/cd5293c5-8803-4aaf-858a-bba38054a885)
 
